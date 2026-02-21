@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Casino Game</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #00ffcc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3rem;
+            text-shadow: 0 0 20px #00ffcc;
+        }
+        #playButton {
+            background: linear-gradient(90deg, #00ffcc, #ff00ff);
+            border: none;
+            border-radius: 50px;
+            padding: 20px 40px;
+            font-size: 2rem;
+            color: #1a1a1a;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00ffcc;
+            transition: transform 0.3s;
+        }
+        #playButton:hover {
+            transform: scale(1.1);
+        }
+        #gameContainer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #score {
+            font-size: 2rem;
+            margin: 20px;
+        }
+        #timer {
+            font-size: 2rem;
+            margin: 20px;
+        }
+        #gameOver {
+            display: none;
+            font-size: 2rem;
+            color: #ff0000;
+        }
+        #restartButton {
+            background: linear-gradient(90deg, #ff00ff, #00ffcc);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff00ff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Neon Casino Game</h1>
+    <button id="playButton">PLAY</button>
+
+    <div id="gameContainer">
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 30</div>
+        <div id="gameOver">Game Over!</div>
+        <button id="restartButton">Restart</button>
+    </div>
+
+    <footer>
+        <p>Build Timestamp: 2026-02-21T23:39:04.952Z | Job ID: job-1771717123957</p>
+    </footer>
+
+    <script>
+        const playButton = document.getElementById('playButton');
+        const gameContainer = document.getElementById('gameContainer');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const gameOverDisplay = document.getElementById('gameOver');
+        const restartButton = document.getElementById('restartButton');
+
+        let score = 0;
+        let timeLeft = 30;
+        let gameInterval;
+        let timerInterval;
+
+        playButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', restartGame);
+
+        function startGame() {
+            score = 0;
+            timeLeft = 30;
+            gameContainer.style.display = 'flex';
+            playButton.style.display = 'none';
+            scoreDisplay.textContent = 'Score: ' + score;
+            timerDisplay.textContent = 'Time: ' + timeLeft;
+            gameOverDisplay.style.display = 'none';
+            gameInterval = setInterval(updateGame, 1000);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateGame() {
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+            const userGuess = prompt('Guess a number between 1 and 100:');
+            if (userGuess == randomNumber) {
+                score += 10;
+                scoreDisplay.textContent = 'Score: ' + score;
+                alert('Correct! Your score increased by 10.');
+            } else {
+                alert('Wrong! The correct number was ' + randomNumber + '.');
+            }
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            timerDisplay.textContent = 'Time: ' + timeLeft;
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            clearInterval(timerInterval);
+            gameOverDisplay.style.display = 'block';
+            gameOverDisplay.textContent = 'Game Over! Your final score is: ' + score;
+        }
+
+        function restartGame() {
+            startGame();
+        }
+    </script>
+</body>
+</html>
